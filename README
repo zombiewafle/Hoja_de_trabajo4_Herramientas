@@ -4,7 +4,7 @@ Docker o Podman
 API Key de Groq
 Configuración
 
-Crear un archivo .env en la raíz del proyecto utilizando .env.example como referencia:
+Crear un archivo .env en la raíz del proyecto utilizando, como referencia:
 
 GROQ_API_KEY=
 DB_NAME=laboratorio4_agents
@@ -12,14 +12,14 @@ DB_USER=postgres
 DB_PASSWORD=postgres
 Levantar PostgreSQL + pgvector
 
-Con Docker:
-
+Configuración con Docker:
 docker compose up -d
 
 Preparar entorno de Python
 Linux / macOS
 ./setup.sh
 source .venv/bin/activate
+
 Windows PowerShell
 .\setup.ps1
 .venv\Scripts\Activate.ps1
