@@ -1,5 +1,35 @@
-Linux/macOS:
-./setup.sh
+Requisitos
+Python 3
+Docker o Podman
+API Key de Groq
+Configuración
 
-Windows PowerShell:
+Crear un archivo .env en la raíz del proyecto utilizando .env.example como referencia:
+
+GROQ_API_KEY=
+DB_NAME=laboratorio4_agents
+DB_USER=postgres
+DB_PASSWORD=postgres
+Levantar PostgreSQL + pgvector
+
+Con Docker:
+
+docker compose up -d
+
+Preparar entorno de Python
+Linux / macOS
+./setup.sh
+source .venv/bin/activate
+Windows PowerShell
 .\setup.ps1
+.venv\Scripts\Activate.ps1
+
+Cargar la base de conocimientos
+Con PostgreSQL activo:
+python lab4_carga.py
+
+Ejecutar el agente
+python lab4_agente.py
+
+Para salir:
+Bye
