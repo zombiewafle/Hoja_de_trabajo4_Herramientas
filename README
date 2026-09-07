@@ -10,9 +10,8 @@ GROQ_API_KEY=
 DB_NAME=laboratorio4_agents
 DB_USER=postgres
 DB_PASSWORD=postgres
-Levantar PostgreSQL + pgvector
 
-Configuración con Docker:
+Levantar PostgreSQL + pgvector con Docker:
 docker compose up -d
 
 Preparar entorno de Python
