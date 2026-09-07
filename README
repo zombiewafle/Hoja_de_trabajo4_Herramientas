@@ -1,0 +1,5 @@
+Linux/macOS:
+./setup.sh
+
+Windows PowerShell:
+.\setup.ps1
