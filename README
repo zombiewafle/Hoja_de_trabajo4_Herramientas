@@ -2,8 +2,8 @@ Requisitos
 Python 3
 Docker o Podman
 API Key de Groq
-Configuración
 
+Configuración
 Crear un archivo .env en la raíz del proyecto utilizando, como referencia:
 
 GROQ_API_KEY=
