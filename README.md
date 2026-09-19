@@ -1,14 +1,15 @@
-# Laboratorio 4 — Agente de atención al cliente (Parachute S.A.)
+# Laboratorio 4 — Agentes de atención al cliente (Parachute S.A.)
 
-Agente conversacional con herramienta de búsqueda de FAQs sobre una base de conocimientos vectorial (pgvector), usando Groq como proveedor de LLM.
+Agentes conversacionales con búsqueda de FAQs sobre una base de conocimientos vectorial (pgvector), consulta de clima (Open-Meteo) y agendamiento de citas de salto, usando Groq como proveedor de LLM. Incluye tres arquitecturas de orquestación multiagente (centralizada, jerárquica, decentralizada) construidas con el [`openai-agents` SDK](https://openai.github.io/openai-agents-python/) apuntando al endpoint compatible con OpenAI de Groq.
 
 ## Estructura del proyecto
 
 | Ruta | Contenido |
 | --- | --- |
-| `src/` | Código fuente (agente y script de carga) |
+| `src/` | Código fuente: agentes y `common/` (lógica de integración compartida) |
 | `data/` | Corpus de FAQs |
 | `db/` | Esquema inicial de la base de datos (`init.sql`) |
+| `docs/` | Diagramas de arquitectura y PDF de respuestas |
 | `demo/` | Video de demostración |
 | `compose.yaml` | Definición de PostgreSQL + pgvector |
 
@@ -49,10 +50,22 @@ Con PostgreSQL activo:
 uv run src/lab4_carga.py
 ```
 
-## Ejecutar el agente
+## Ejecutar el agente (FAQs)
 
 ```sh
 uv run src/lab4_agente.py
+```
+
+Para salir, escribir `Bye`.
+
+## Ejecutar los agentes multiagente (FAQs + clima + citas)
+
+Cada programa resuelve el mismo problema (FAQs, consulta de clima y agendamiento de citas) con una arquitectura de orquestación distinta. Ver `docs/architecture.md` para el diagrama de cada una y `docs/respuestas.pdf` para el análisis comparativo.
+
+```sh
+uv run src/agente_centralizado.py
+uv run src/agente_jerarquico.py
+uv run src/agente_decentralizado.py
 ```
 
 Para salir, escribir `Bye`.

@@ -8,3 +8,12 @@ CREATE TABLE IF NOT EXISTS faqs (
     metadata JSONB,
     embedding VECTOR(384)
 );
+
+CREATE TABLE IF NOT EXISTS citas (
+    id SERIAL PRIMARY KEY,
+    fecha DATE NOT NULL,
+    cliente TEXT NOT NULL DEFAULT 'Cliente',
+    estado VARCHAR(20) NOT NULL,
+    evaluacion JSONB,
+    creado_en TIMESTAMPTZ NOT NULL DEFAULT now()
+);

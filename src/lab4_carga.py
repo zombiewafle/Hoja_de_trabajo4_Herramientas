@@ -9,6 +9,8 @@ from psycopg.types.json import Jsonb
 from pgvector.psycopg import register_vector
 from sentence_transformers import SentenceTransformer
 
+load_dotenv()
+
 CORPUS_PATH = Path(__file__).resolve().parent.parent / "data" / "Corpus_FAQs_Parachute_SA_2026.txt"
 
 model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
