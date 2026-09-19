@@ -1,11 +1,15 @@
 import os
 import re
 import json
+from pathlib import Path
+
 import psycopg
 from dotenv import load_dotenv
 from psycopg.types.json import Jsonb
 from pgvector.psycopg import register_vector
 from sentence_transformers import SentenceTransformer
+
+CORPUS_PATH = Path(__file__).resolve().parent.parent / "data" / "Corpus_FAQs_Parachute_SA_2026.txt"
 
 model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
@@ -20,7 +24,7 @@ DB_CONFIG = {
 
 
 def parsing():
-    with open("Corpus_FAQs_Parachute_SA_2026.txt" , "r", encoding="utf-8") as file:
+    with open(CORPUS_PATH, "r", encoding="utf-8") as file:
         contenido  = file.read();
         
         bloques = contenido.split("------------------------------------------------------------")
