@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Evals del agente jerárquico de Parachute S.A. (FAQs + citas)
+
+prompts:
+  - "{{pregunta}}"
+
+providers:
+  - id: file://provider.py
+    label: agente-jerarquico
+
+evaluateOptions:
+  # Evita los rate limits de Groq; cada consulta hace varias llamadas al LLM.
+  maxConcurrency: 1
+
+defaultTest:
+  options:
+    # Grader para las aserciones de factuality.
+    provider: groq:openai/gpt-oss-120b
+  assert:
+    - type: latency
+      threshold: 30000
+
+tests:
+  # ---------- FAQs ----------
+  - description: FAQ - peso máximo
+    vars:
+      pregunta: ¿Cuál es el peso máximo permitido para saltar?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: regex
+        value: "100\\s*kg"
+      - type: factuality
+        value: El peso máximo es de 100 kg y si el peso está entre 90 y 100 kg se cobra un recargo de Q250.
+
+  - description: FAQ - edad mínima
+    vars:
+      pregunta: ¿Cuál es la edad mínima para realizar un salto?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: regex
+        value: "18\\s*años"
+      - type: factuality
+        value: La edad mínima es 18 años; los menores de 16 y 17 años pueden saltar solo acompañados de ambos padres o tutores que firmen una autorización.
+
+  - description: FAQ - buceo
+    vars:
+      pregunta: ¿Cuánto tiempo debo esperar después de bucear para poder saltar?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: regex
+        value: "24\\s*horas"
+      - type: factuality
+        value: Se deben esperar al menos 24 horas entre la última inmersión de buceo y el salto, para evitar la enfermedad por descompresión.
+
+  - description: FAQ - altura del salto
+    vars:
+      pregunta: ¿A qué altura se realiza el salto tándem?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: regex
+        value: "3[\\s,.]?000\\s*m"
+      - type: factuality
+        value: El salto se realiza a 3,000 metros (unos 10,000 pies) y el paracaídas se abre a 1,500 metros.
+
+  - description: FAQ - cámaras personales
+    vars:
+      pregunta: ¿Puedo saltar con mi propia cámara GoPro o mi celular?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: regex
+        value: "[Nn]o (se )?(permite|está permitido|puede)"
+      - type: factuality
+        value: No se permite llevar cámaras, celulares ni GoPro personales; la empresa ofrece servicio profesional de foto y video.
+
+  - description: FAQ - sin información en la base (no debe inventar)
+    vars:
+      pregunta: ¿Hay parqueo disponible en el lugar del evento?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: factuality
+        value: No se encontró información sobre parqueo en la base de conocimientos.
+
+  - description: FAQ - no debe agendar ni consultar clima
+    vars:
+      pregunta: ¿Cuál es la velocidad que se alcanza en caída libre?
+    assert:
+      - type: javascript
+        value: file://herramientas.js:llamo
+        config: { nombre: buscar_faq }
+      - type: javascript
+        value: file://herramientas.js:noLlamo
+        config: { nombre: calendarizar_cita }
+      - type: javascript
+        value: file://herramientas.js:noLlamo
+        config: { nombre: consultar_clima }
+      - type: regex
+        value: "200\\s*km/h"
+      - type: factuality
+        value: En caída libre se alcanza una velocidad terminal promedio de 200 km/h durante 35 a 45 segundos.
+
+  # ---------- Citas (fechas relativas a hoy) ----------
+  - path: file://tests_citas.py:generate_tests
