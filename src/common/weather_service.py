@@ -1,4 +1,5 @@
 import json
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date, datetime
@@ -8,10 +9,17 @@ from . import config
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
 
 
-def _fetch(params: dict) -> dict:
+def _fetch(params: dict, intentos: int = 3) -> dict:
+    # Open-Meteo a veces se queda colgado en el handshake TLS de forma
+    # intermitente; reintentar con un timeout corto lo resuelve.
     url = f"{OPEN_METEO_URL}?{urllib.parse.urlencode(params)}"
-    with urllib.request.urlopen(url, timeout=10) as resp:
-        return json.loads(resp.read())
+    for intento in range(intentos):
+        try:
+            with urllib.request.urlopen(url, timeout=5) as resp:
+                return json.loads(resp.read())
+        except (urllib.error.URLError, TimeoutError):
+            if intento == intentos - 1:
+                raise
 
 
 def _peor_veredicto(*veredictos: str) -> str:
