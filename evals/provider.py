@@ -35,17 +35,34 @@ _registrar(faq_service, "buscar_faq")
 _registrar(weather_service, "consultar_clima")
 _registrar(citas_service, "calendarizar_cita")
 
-
 def call_api(prompt, options, context):
     ultimo_error = None
+
     for _ in range(MAX_INTENTOS):
         herramientas_llamadas.clear()
+
         try:
-            resultado = Runner.run_sync(supervisor_global, prompt)
+            resultado = Runner.run_sync(
+                supervisor_global,
+                prompt,
+            )
+
             return {
-                "output": resultado.final_output,
-                "metadata": {"herramientas": list(herramientas_llamadas)},
+                "output": str(resultado.final_output),
+                "metadata": {
+                    "herramientas": list(herramientas_llamadas)
+                },
             }
+
         except Exception as error:
             ultimo_error = error
-    return {"error": f"El agente falló tras {MAX_INTENTOS} intentos: {ultimo_error}"}
+
+    return {
+        "error": (
+            f"El agente falló tras "
+            f"{MAX_INTENTOS} intentos: {ultimo_error}"
+        ),
+        "metadata": {
+            "herramientas": list(herramientas_llamadas)
+        },
+    }

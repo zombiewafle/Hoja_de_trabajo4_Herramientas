@@ -14,7 +14,7 @@ DB_CONFIG = {
     "user": os.getenv("DB_USER"),
     "password": os.getenv("DB_PASSWORD"),
     "host": "localhost",
-    "port": "5432",
+    "port": os.getenv("DB_PORT", "5433"),
 }
 
 UMBRAL_SIMILITUD = 0.50
