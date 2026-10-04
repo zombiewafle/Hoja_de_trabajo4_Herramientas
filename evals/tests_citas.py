@@ -23,7 +23,7 @@ def _fecha(dias: int) -> str:
 REGEX_ESTADO = {
     "confirmada": "[Cc]onfirmad",
     "marginal": "[Mm]arginal",
-    "rechazada": "[Rr]echazad|[Nn]o (es posible|se puede|puedo|podemos)",
+    "rechazada": "[Rr]echazad[ao]|[Nn]o\s+(es\s+posible|se\s+puede|puedo|podemos|puede\s+confirmarse)",
 }
 REGEX_VEREDICTO = {
     "ideal": "[Ii]deal|[Aa]pt[oa]|[Bb]uen",
