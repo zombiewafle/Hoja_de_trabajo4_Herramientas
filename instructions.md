@@ -1,17 +1,27 @@
 # Objetivos
-Familiarizarse con los evals, métricas, graders en la evaluación de sistemas de inteligencia artificial para asegurar la calidad de estos.
+Familiarizarse con los protocolos para herramientas, prompts y recursos (MCP) y para comunicación entre agentes (A2A).
 
 # Instrucciones
-Resuelvan el siguiente problema utilizando la herramienta/librería promptfoo para realizar los evals faltantes de la hoja de trabajo anterior. Utilizando la arquitectura que ustedes consideraron la mejor. 
+Utilizando el código que han venido trabajando del agente para la empresa Parachute S,A. Abstraiga las herramientas de sus agentes en un solo servidor MCP, y exponga su multi agent system  como un solo agente con sus skills utilizando A2A .
 
-Se debe de entregar un link al repositorio con el código y el archivo de reporte generado por promptfoo.
+Para realizar su propio servidor MCP:
 
-# Problema
-Debido a que Parachute S,A ya consideró el producto que ustedes realizaron como ya terminado, le ha indicado que tiene pronto la intención de ponerlo en productivo. Como buenos ingenieros, deciden cerrar el ciclo de desarrollo con el bloque faltante, los evals, ya que Parachute S,A le ha advertido que seguirá iterando el producto.
+- Pueden consultar https://modelcontextprotocol.io/docs/2026-07-28/develop/build-server
+- Si utilizan el SDK de Open AI Agents, este ya provee la opción para integrarse como cliente fácilmente, en este link pueden ver la guía del SDK de python:
+  - https://openai.github.io/openai-agents-python/mcp/
+Deben de utilizar como transporte Stremeable HTTP.
 
-Dado a que el agente actual que desarrolló tiene dos funcionalidades, agendar citas y resolver preguntas frecuentes debe de realizar evals para ambos. Debe contener evals de factuality, determinísticos (contains/regex), latencia y de tool execution (verificar si las herramientas han sido llamadas correctamente).
+Para hacer su agente compatible con A2A:
 
-Se pueden guiar de los siguientes recursos para realizarlos:
+- Tienen que crear un servidor A2A que envuelva su Multi Agent System
+  - Pueden explorar como hacerlo en la página oficial del protocolo
 
-- https://www.promptfoo.dev/docs/guides/evaluate-rag/
-- https://www.promptfoo.dev/docs/getting-started/
+- Deberán modificar su interfaz de terminal para que se comporte como un A2A Client. Los SDK de A2A ya proveen código para crear clientes A2A, pueden ver una guía básica de su uso con el SDK de python aquí:
+  - https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/#understanding-the-client-code
+ 
+
+Debe de entregar el código de su implementación en un repositorio y un video en donde se vea lo siguiente:
+
+- El servidor MCP siendo ejecutado y emitiendo logs por cada ejecución de  herramientas
+- El servidor A2A siendo ejecutado y emitiendo logs
+- Su aplicación de terminal interactúando ya con con su servidor A2A
